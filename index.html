@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<!-- saved from url=(0060)file:///Users/trevor/Downloads/fitos_premium_enhanced_4.html -->
+<!-- saved from url=(0054)file:///Users/trevor/Downloads/FitOS_Anurag_fixed.html -->
 <html lang="en" data-theme="light"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>FitOS — Anurag</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="./index_files/css2" rel="stylesheet">
+<script src="./index_files/chart.umd.min.js"></script>
 <style>
 /* ══════════════════════════════════════════════════════════════
    DESIGN TOKENS
@@ -74,7 +74,7 @@
   --r:    14px;
   --r-sm: 9px;
   --r-xs: 6px;
-  --sw:   250px;
+  --sw:   256px;
   --tr:   160ms cubic-bezier(.4,0,.2,1);
 
   --sh-xs: 0 1px 3px rgba(0,0,0,.7);
@@ -105,7 +105,7 @@ img,svg { display:block }
 ::-webkit-scrollbar-track { background:transparent }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   background: var(--bg);
   color: var(--t1);
   min-height: 100vh;
@@ -165,17 +165,20 @@ body {
   font-size:12.5px; font-weight:500; color:var(--t2);
   text-align:left; transition:all var(--tr); margin-bottom:1px;
   position:relative; letter-spacing:.1px;
+  cursor:pointer;
 }
-.nav-item:hover { background:var(--s2); color:var(--t1) }
+.nav-item:hover { background:var(--s3); color:var(--t1); transform:translateX(1px) }
 .nav-item.active {
   background: var(--gold-dim);
   color: var(--gold); font-weight:600;
+  transform:none;
 }
 .nav-item.active::before {
   content:''; position:absolute; left:0; top:50%; transform:translateY(-50%);
-  width:3px; height:18px;
+  width:3px; height:20px;
   background: linear-gradient(180deg, var(--gold), #C9992E);
   border-radius:0 3px 3px 0;
+  box-shadow: 2px 0 8px rgba(240,200,74,0.35);
 }
 .nav-icon { font-size:14px; flex-shrink:0; width:18px; text-align:center }
 .nav-badge {
@@ -184,7 +187,9 @@ body {
   font-size:8px; font-weight:700;
   padding:2px 5px; border-radius:10px;
   font-family:'JetBrains Mono',monospace;
+  animation: badgePop .2s ease;
 }
+@keyframes badgePop { from{transform:scale(0)} to{transform:scale(1)} }
 
 .sb-bottom { margin-top:auto; padding-top:10px; border-top:1px solid var(--border) }
 .sb-streak {
@@ -346,11 +351,30 @@ body {
 .main {
   margin-left: var(--sw); flex:1;
   min-height:100vh;
+  height:100vh;
+  overflow-y:auto;
   padding: 30px 28px 110px;
+  scroll-behavior:smooth;
 }
-.view { display:none; animation: viewIn .22s ease both }
+.view { display:none; animation: viewIn .2s ease both }
 .view.active { display:block }
-@keyframes viewIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+@keyframes viewIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+/* Loading skeleton for empty views */
+.view.active:empty::after {
+  content:'';
+  display:block;
+  height:80px;
+  border-radius:var(--r);
+  background: linear-gradient(90deg, var(--s2) 25%, var(--s3) 50%, var(--s2) 75%);
+  background-size: 400% 100%;
+  animation: shimmer 1.2s ease infinite;
+  margin-top:40px;
+}
+@keyframes shimmer {
+  0%{background-position:100% 0}
+  100%{background-position:-100% 0}
+}
 
 /* ══════════════════════════════════════════════════════════════
    PAGE HEADER
@@ -411,9 +435,10 @@ body {
 .sc {
   background:var(--s1); border:1px solid var(--border);
   border-radius:var(--r); padding:18px 20px;
-  box-shadow:var(--sh-sm); transition:all var(--tr); position:relative; overflow:hidden;
+  box-shadow:var(--sh-sm); transition:all 200ms cubic-bezier(.4,0,.2,1);
+  position:relative; overflow:hidden; cursor:default;
 }
-.sc:hover { box-shadow:var(--sh); transform:translateY(-2px); border-color:var(--border2) }
+.sc:hover { box-shadow:var(--sh); transform:translateY(-3px); border-color:var(--border3) }
 .sc-lbl { font-size:10px; font-weight:500; color:var(--t3); text-transform:uppercase; letter-spacing:.7px; margin-bottom:6px }
 .sc-val {
   font-family:'Plus Jakarta Sans',sans-serif; font-weight:800;
@@ -628,13 +653,13 @@ select.form-input { cursor:pointer }
 }
 .log-search-input:focus { border-color:var(--gold-mid); background:var(--s3) }
 .log-filter-btn {
-  padding:7px 12px; border-radius:8px;
+  padding:7px 14px; border-radius:20px;
   font-size:10.5px; font-weight:600; color:var(--t2);
-  background:var(--s2); border:1px solid var(--border);
+  background:var(--s2); border:1.5px solid var(--border2);
   cursor:pointer; transition:all var(--tr); white-space:nowrap;
 }
-.log-filter-btn:hover { background:var(--s3); color:var(--t1) }
-.log-filter-btn.active { background:var(--gold-dim); color:var(--gold); border-color:var(--gold-mid) }
+.log-filter-btn:hover { background:var(--s3); color:var(--t1); transform:translateY(-1px) }
+.log-filter-btn.active { background:var(--gold-dim); color:var(--gold); border-color:var(--gold); box-shadow:0 2px 8px rgba(240,200,74,0.18) }
 
 .bulk-fill-row {
   display:flex; gap:6px; align-items:center;
@@ -908,11 +933,13 @@ select.form-input { cursor:pointer }
   padding:5px 14px; border-radius:20px; font-size:11px; font-weight:600;
   background:var(--s2); border:1.5px solid var(--border2); color:var(--t2);
   cursor:pointer; transition:all var(--tr);
+  white-space:nowrap;
 }
 .cat-tab.active {
   background:var(--gold-dim); border-color:var(--gold); color:var(--gold);
+  box-shadow:0 2px 8px rgba(240,200,74,0.18);
 }
-.cat-tab:hover:not(.active) { background:var(--s3); color:var(--t1) }
+.cat-tab:hover:not(.active) { background:var(--s3); color:var(--t1); border-color:var(--border3); transform:translateY(-1px) }
 
 /* Habits weekly bar chart */
 .habits-trend-wrap { min-height:140px; padding:10px 14px 4px }
@@ -1002,14 +1029,20 @@ select.form-input { cursor:pointer }
 }
 .day-btn {
   flex:1; min-width:0;
-  background:var(--s2); border:1px solid var(--border);
-  border-radius:9px; padding:9px 6px;
+  background:var(--s2); border:1.5px solid var(--border);
+  border-radius:10px; padding:10px 6px;
   text-align:center; cursor:pointer; transition:all var(--tr);
   font-size:10.5px; font-weight:500; color:var(--t2);
+  position:relative;
 }
-.day-btn:hover { background:var(--s3); color:var(--t1); border-color:var(--border2) }
-.day-btn.active { background:var(--gold-dim); border-color:var(--gold); color:var(--gold); font-weight:700 }
-.day-btn.is-rest { opacity:.55 }
+.day-btn:hover { background:var(--s3); color:var(--t1); border-color:var(--border3); transform:translateY(-1px) }
+.day-btn.active {
+  background:var(--gold-dim); border-color:var(--gold);
+  color:var(--gold); font-weight:700;
+  box-shadow: 0 4px 12px rgba(240,200,74,0.2);
+  transform:translateY(-1px);
+}
+.day-btn.is-rest { opacity:.5 }
 .day-btn.done-today { position:relative }
 .day-btn.done-today::after {
   content:'✓'; position:absolute; top:3px; right:5px;
@@ -1021,16 +1054,20 @@ select.form-input { cursor:pointer }
    WORKOUT EXERCISE CARDS
 ══════════════════════════════════════════════════════════════ */
 .ex-card {
-  background:var(--s1); border:1px solid var(--border);
-  border-radius:12px; margin-bottom:10px; overflow:hidden;
-  transition:all var(--tr);
+  background:var(--s1); border:1.5px solid var(--border);
+  border-radius:13px; margin-bottom:10px; overflow:hidden;
+  transition:all 200ms cubic-bezier(.4,0,.2,1);
 }
-.ex-card:hover { border-color:var(--border2) }
+.ex-card:hover { border-color:var(--border3); box-shadow:var(--sh-sm) }
+.ex-card.completed { border-color:var(--green); background:linear-gradient(135deg, var(--s1) 80%, var(--green-dim)) }
 .ex-header {
   display:flex; align-items:center; justify-content:space-between;
   padding:13px 18px; cursor:pointer;
   border-bottom:1px solid var(--border);
+  transition:background var(--tr);
+  user-select:none;
 }
+.ex-header:hover { background:var(--s2) }
 .ex-name {
   font-weight:600; font-size:13px; color:var(--t1);
 }
@@ -1964,833 +2001,17 @@ select.form-input { cursor:pointer }
 .dash-quick-btn .dqb-icon { font-size:20px }
 
 /* ══ PROGRESS SECTION ══════════════════════════════════════════ */
-.prg-tabs { display:flex; gap:0; margin-bottom:14px; border-bottom:1px solid var(--border) }
+.prg-tabs { display:flex; gap:0; margin-bottom:14px; border-bottom:2px solid var(--border) }
 .prg-tab {
-  padding:9px 16px; font-size:12px; font-weight:500; color:var(--t3);
-  border-bottom:2px solid transparent; margin-bottom:-1px;
+  padding:10px 18px; font-size:12px; font-weight:500; color:var(--t3);
+  border-bottom:2px solid transparent; margin-bottom:-2px;
   cursor:pointer; transition:all var(--tr);
 }
-.prg-tab.active { color:var(--gold); border-bottom-color:var(--gold) }
-.prg-tab:hover:not(.active) { color:var(--t1) }
-
-
-/* ═══════════════════════════════════════════════════════════════
-   ██████╗ ██████╗ ███████╗███╗   ███╗██╗██╗   ██╗███╗   ███╗
-   ██╔══██╗██╔══██╗██╔════╝████╗ ████║██║██║   ██║████╗ ████║
-   ██████╔╝██████╔╝█████╗  ██╔████╔██║██║██║   ██║██╔████╔██║
-   ██╔═══╝ ██╔══██╗██╔══╝  ██║╚██╔╝██║██║██║   ██║██║╚██╔╝██║
-   ██║     ██║  ██║███████╗██║ ╚═╝ ██║██║╚██████╔╝██║ ╚═╝ ██║
-   ENHANCED UI 3.0 — Better fonts, richer colors, perfect mobile
-═══════════════════════════════════════════════════════════════ */
-
-/* ─── 1. ENRICHED DESIGN TOKENS ─────────────────────────────── */
-:root {
-  /* Surfaces – deep navy-indigo dark */
-  --bg:   #05050E;
-  --s1:   #0B0B1A;
-  --s2:   #111123;
-  --s3:   #17172E;
-  --s4:   #1D1D38;
-  --s5:   #242444;
-
-  /* Borders */
-  --border:  rgba(255,255,255,0.065);
-  --border2: rgba(255,255,255,0.11);
-  --border3: rgba(255,255,255,0.16);
-
-  /* Text */
-  --t1: #F0F0FE;
-  --t2: #9494BB;
-  --t3: #565680;
-  --t4: #363660;
-
-  /* Gold – richer, more electric */
-  --gold:      #FFD060;
-  --gold-dim:  rgba(255,208,96,0.11);
-  --gold-mid:  rgba(255,208,96,0.24);
-  --gold-glow: rgba(255,208,96,0.20);
-  --gold2:     #CF8A1A;
-
-  /* Blue – electric */
-  --blue:      #60C8FF;
-  --blue-dim:  rgba(96,200,255,0.09);
-  --blue-mid:  rgba(96,200,255,0.21);
-  --blue-glow: rgba(96,200,255,0.15);
-
-  /* Red – vivid */
-  --red:       #FF6B7A;
-  --red-dim:   rgba(255,107,122,0.10);
-  --red-mid:   rgba(255,107,122,0.22);
-
-  /* Green – neon-mint */
-  --green:     #36EDA8;
-  --green-dim: rgba(54,237,168,0.09);
-  --green-mid: rgba(54,237,168,0.21);
-
-  /* Purple – electric */
-  --purple:    #BC9EFF;
-  --purple-dim:rgba(188,158,255,0.10);
-  --purple-mid:rgba(188,158,255,0.22);
-
-  /* Orange – vivid */
-  --orange:    #FF9B52;
-  --orange-dim:rgba(255,155,82,0.10);
-  --orange-mid:rgba(255,155,82,0.22);
-
-  /* Teal */
-  --teal:      #2DE8CB;
-  --teal-dim:  rgba(45,232,203,0.09);
-  --teal-mid:  rgba(45,232,203,0.21);
-
-  /* Pink */
-  --pink:      #F47DC0;
-  --pink-dim:  rgba(244,125,192,0.09);
-  --pink-mid:  rgba(244,125,192,0.21);
-
-  /* Border radius – slightly more rounded */
-  --r:    16px;
-  --r-sm: 10px;
-  --r-xs: 7px;
-
-  /* Gradients */
-  --grad-gold:   linear-gradient(135deg, #FFD060 0%, #CF8A1A 100%);
-  --grad-green:  linear-gradient(135deg, #36EDA8 0%, #059669 100%);
-  --grad-blue:   linear-gradient(135deg, #60C8FF 0%, #2563EB 100%);
-  --grad-purple: linear-gradient(135deg, #BC9EFF 0%, #7C3AED 100%);
-  --grad-bg:     linear-gradient(180deg, #05050E 0%, #08080F 100%);
-
-  /* Shadows – richer */
-  --sh-xs: 0 1px 4px rgba(0,0,0,.85);
-  --sh-sm: 0 2px 14px rgba(0,0,0,.65), 0 1px 4px rgba(0,0,0,.5);
-  --sh:    0 8px 32px rgba(0,0,0,.65), 0 2px 10px rgba(0,0,0,.5);
-  --sh-lg: 0 24px 72px rgba(0,0,0,.85), 0 4px 20px rgba(0,0,0,.6);
-  --sh-gold:  0 8px 36px rgba(255,208,96,0.22);
-  --sh-green: 0 8px 36px rgba(54,237,168,0.16);
-
-  --tr: 160ms cubic-bezier(.4,0,.2,1);
-}
-
-/* ─── 2. TYPOGRAPHY UPGRADE ─────────────────────────────────── */
-html { font-size: 14px }
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--t1);
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Display font — Syne for all big headings */
-.pg-title,
-.sb-brand-text,
-.sb-streak-num,
-.hs-num,
-.pr-value,
-.sc-val,
-.tw-name,
-.ring-pct,
-.grade-badge,
-.macro-val,
-.card-title,
-.modal-title,
-.ks-title {
-  font-family: 'Syne', sans-serif !important;
-}
-
-/* DM Sans for nav, buttons, labels */
-.nav-item, .btn, .bnav-item, .setting-label, .food-name, .log-name,
-.ex-name, .habit-name, .hb-name { font-family: 'DM Sans', sans-serif }
-
-/* ─── 3. PAGE HEADERS ───────────────────────────────────────── */
-.pg-title {
-  font-size: 28px !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.8px !important;
-  line-height: 1.15 !important;
-}
-.pg-eyebrow {
-  font-size: 10px !important;
-  letter-spacing: 3px !important;
-  color: var(--gold) !important;
-}
-.pg-sub { font-size: 12.5px; color: var(--t3); }
-
-/* ─── 4. SIDEBAR REDESIGN ───────────────────────────────────── */
-.sidebar {
-  background: linear-gradient(180deg, #0A0A18 0%, #06060F 100%) !important;
-  border-right: 1px solid rgba(255,208,96,0.08) !important;
-  width: 250px;
-  --sw: 250px;
-}
-
-.sb-logo {
-  background: var(--grad-gold) !important;
-  box-shadow: 0 4px 20px rgba(255,208,96,0.4), 0 0 0 1px rgba(255,208,96,0.25) !important;
-  border-radius: 12px !important;
-  font-family: 'Syne', sans-serif !important;
-  font-size: 16px !important;
-  font-weight: 900 !important;
-}
-
-.sb-brand-text {
-  font-family: 'Syne', sans-serif !important;
-  font-size: 18px !important;
-  letter-spacing: -0.3px !important;
-  color: var(--t1) !important;
-}
-
-.sb-brand-sub {
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 9px !important;
-  color: var(--t3) !important;
-}
-
-.nav-item {
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  border-radius: 10px !important;
-  padding: 10px 12px !important;
-  letter-spacing: 0 !important;
-}
-
-.nav-item:hover {
-  background: rgba(255,208,96,0.06) !important;
-  color: var(--t1) !important;
-}
-
-.nav-item.active {
-  background: linear-gradient(135deg, rgba(255,208,96,0.14), rgba(255,208,96,0.06)) !important;
-  color: var(--gold) !important;
-  font-weight: 600 !important;
-  box-shadow: inset 3px 0 0 var(--gold) !important;
-}
-
-.nav-item.active::before { display:none !important; }
-
-.sb-section {
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 8px !important;
-  letter-spacing: 2.5px !important;
-  color: var(--t4) !important;
-  margin: 12px 0 4px !important;
-}
-
-.sb-streak {
-  background: linear-gradient(140deg, #0C0C1C, #161630) !important;
-  border: 1px solid var(--gold-mid) !important;
-  border-radius: 14px !important;
-}
-
-.sb-streak-num {
-  font-family: 'Syne', sans-serif !important;
-  font-size: 32px !important;
-  font-weight: 800 !important;
-  background: var(--grad-gold) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
-}
-
-/* ─── 5. BOTTOM NAV REDESIGN (MOBILE) ──────────────────────── */
-.bottom-nav {
-  background: rgba(9,9,22,0.96) !important;
-  backdrop-filter: blur(28px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
-  border-top: 1px solid rgba(255,208,96,0.1) !important;
-  padding: 8px 4px max(12px, env(safe-area-inset-bottom)) !important;
-  height: auto !important;
-}
-
-.bnav-item {
-  font-family: 'DM Sans', sans-serif !important;
-  font-size: 9px !important;
-  font-weight: 600 !important;
-  color: var(--t3) !important;
-  padding: 6px 8px !important;
-  border-radius: 12px !important;
-  transition: all 200ms ease !important;
-  min-width: 48px !important;
-  gap: 2px !important;
-}
-
-.bnav-item.active {
-  color: var(--gold) !important;
-  background: rgba(255,208,96,0.10) !important;
-}
-
-.bnav-item:hover:not(.active) {
-  color: var(--t2) !important;
-  background: rgba(255,255,255,0.05) !important;
-}
-
-.bnav-icon { font-size: 20px !important; }
-
-/* ─── 6. CARDS ──────────────────────────────────────────────── */
-.card {
-  border-radius: 16px !important;
-  border: 1px solid var(--border) !important;
-  background: var(--s1) !important;
-  transition: box-shadow 200ms ease, border-color 200ms ease, transform 200ms ease !important;
-}
-
-.card:hover {
-  border-color: var(--border2) !important;
-  box-shadow: var(--sh) !important;
-  transform: translateY(-1px) !important;
-}
-
-/* ─── 7. STAT CARDS ─────────────────────────────────────────── */
-.sc {
-  border-radius: 16px !important;
-  background: var(--s1) !important;
-  border: 1px solid var(--border) !important;
-  padding: 20px !important;
-  transition: all 200ms ease !important;
-}
-
-.sc:hover {
-  border-color: var(--border2) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: var(--sh) !important;
-}
-
-.sc-val {
-  font-family: 'Syne', sans-serif !important;
-  font-size: 28px !important;
-  font-weight: 800 !important;
-  letter-spacing: -1px !important;
-}
-
-.sc-lbl {
-  font-size: 10px !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.8px !important;
-  text-transform: uppercase !important;
-  color: var(--t3) !important;
-}
-
-.sc-icon {
-  width: 38px !important;
-  height: 38px !important;
-  border-radius: 10px !important;
-  font-size: 17px !important;
-  margin-bottom: 16px !important;
-}
-
-/* ─── 8. BUTTONS ────────────────────────────────────────────── */
-.btn {
-  font-family: 'DM Sans', sans-serif !important;
-  font-weight: 600 !important;
-  border-radius: 10px !important;
-  letter-spacing: 0.1px !important;
-  transition: all 200ms ease !important;
-}
-
-.btn-primary {
-  background: var(--grad-gold) !important;
-  color: #0A0A00 !important;
-  font-weight: 700 !important;
-  box-shadow: 0 4px 18px rgba(255,208,96,0.28) !important;
-  border: none !important;
-}
-
-.btn-primary:hover {
-  box-shadow: 0 6px 26px rgba(255,208,96,0.4) !important;
-  transform: translateY(-1px) !important;
-}
-
-.btn-ghost {
-  background: var(--s2) !important;
-  color: var(--t2) !important;
-  border: 1px solid var(--border2) !important;
-}
-.btn-ghost:hover {
-  background: var(--s3) !important;
-  color: var(--t1) !important;
-  border-color: var(--border3) !important;
-}
-
-.btn-sm { border-radius: 8px !important; }
-.btn-xs { border-radius: 7px !important; }
-
-/* ─── 9. HERO STREAK CARD ───────────────────────────────────── */
-.hero-streak {
-  background: linear-gradient(135deg, #0B0B18 0%, #141430 60%, #0C0C1A 100%) !important;
-  border: 1px solid rgba(255,208,96,0.28) !important;
-  border-radius: 16px !important;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-streak::before {
-  content: '';
-  position: absolute; top: -30px; right: -30px;
-  width: 120px; height: 120px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,208,96,0.2), transparent 70%);
-  pointer-events: none;
-}
-
-.hs-num {
-  font-family: 'Syne', sans-serif !important;
-  font-size: 48px !important;
-  font-weight: 900 !important;
-  letter-spacing: -3px !important;
-  line-height: 1 !important;
-  background: var(--grad-gold) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
-}
-
-.hs-lbl { font-size: 10px !important; color: rgba(255,255,255,0.3) !important; }
-
-/* ─── 10. TODAY WORKOUT CARD ────────────────────────────────── */
-.today-workout-card {
-  border-radius: 16px !important;
-  background: linear-gradient(135deg, #101020 0%, #181834 100%) !important;
-  border: 1px solid rgba(255,208,96,0.12) !important;
-}
-
-.tw-name { font-family: 'Syne', sans-serif !important; font-size: 26px !important; }
-.tw-tag { font-family: 'JetBrains Mono', monospace !important; }
-
-/* ─── 11. MODAL ─────────────────────────────────────────────── */
-.modal {
-  border-radius: 20px !important;
-  border: 1px solid var(--border2) !important;
-  box-shadow: var(--sh-lg), 0 0 80px rgba(0,0,0,0.5) !important;
-  background: var(--s1) !important;
-}
-
-.modal-title {
-  font-family: 'Syne', sans-serif !important;
-  font-size: 20px !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.3px !important;
-}
-
-/* ─── 12. FORMS ─────────────────────────────────────────────── */
-.form-input {
-  font-family: 'DM Sans', sans-serif !important;
-  border-radius: 10px !important;
-  background: var(--s2) !important;
-  border: 1.5px solid var(--border2) !important;
-  color: var(--t1) !important;
-  font-size: 13px !important;
-  padding: 10px 14px !important;
-  transition: border-color 200ms ease, background 200ms ease !important;
-}
-.form-input:focus { border-color: var(--gold) !important; background: var(--s1) !important; }
-.form-label { font-family: 'DM Sans', sans-serif !important; font-size: 11.5px !important; font-weight: 600 !important; }
-
-/* ─── 13. PROGRESS RING ─────────────────────────────────────── */
-.ring-wrap {
-  border-radius: 16px !important;
-  border: 1px solid var(--border) !important;
-  background: var(--s1) !important;
-}
-
-.ring-pct {
-  font-family: 'Syne', sans-serif !important;
-  font-size: 16px !important;
-  font-weight: 800 !important;
-}
-
-/* ─── 14. EXERCISE CARDS ────────────────────────────────────── */
-.ex-card {
-  border-radius: 14px !important;
-  border: 1px solid var(--border) !important;
-  background: var(--s1) !important;
-}
-.ex-name { font-weight: 700 !important; font-size: 13.5px !important; }
-.ex-header { padding: 14px 18px !important; }
-
-/* ─── 15. LOG ROWS ──────────────────────────────────────────── */
-.log-name { font-family: 'Syne', sans-serif !important; font-size: 15px !important; }
-.pr-value { font-family: 'Syne', sans-serif !important; font-size: 20px !important; }
-
-/* ─── 16. HABITS ────────────────────────────────────────────── */
-.hb-card { border-radius: 14px !important; }
-.hb-name { font-family: 'DM Sans', sans-serif !important; font-size: 14px !important; }
-
-/* ─── 17. PILLS ─────────────────────────────────────────────── */
-.pill {
-  font-family: 'JetBrains Mono', monospace !important;
-  border-radius: 6px !important;
-  font-size: 8px !important;
-}
-
-/* ─── 18. TOGGLES ───────────────────────────────────────────── */
-.toggle { border-radius: 12px !important; }
-.hb-toggle-big { border-radius: 14px !important; }
-
-/* ─── 19. DAY SELECTOR ──────────────────────────────────────── */
-.day-btn {
-  border-radius: 12px !important;
-  font-size: 11px !important;
-  font-weight: 600 !important;
-}
-.day-btn.active {
-  background: rgba(255,208,96,0.14) !important;
-  border-color: rgba(255,208,96,0.4) !important;
-  color: var(--gold) !important;
-}
-
-/* ─── 20. PR BADGE ──────────────────────────────────────────── */
-.pr-badge {
-  font-family: 'JetBrains Mono', monospace !important;
-  border-radius: 6px !important;
-}
-
-/* ─── 21. SESSION TIMER ─────────────────────────────────────── */
-.session-timer {
-  font-family: 'JetBrains Mono', monospace !important;
-  border-radius: 10px !important;
-  font-size: 12px !important;
-}
-
-/* ─── 22. TOAST ─────────────────────────────────────────────── */
-.toast {
-  font-family: 'DM Sans', sans-serif !important;
-  border-radius: 12px !important;
-  font-size: 13px !important;
-}
-.toast-ok   { background: linear-gradient(135deg, rgba(22,163,74,.96), rgba(4,120,87,.96)) !important; }
-.toast-gold { background: linear-gradient(135deg, rgba(201,153,46,.96), rgba(180,120,20,.96)) !important; }
-.toast-info { background: linear-gradient(135deg, rgba(37,99,235,.96), rgba(79,70,229,.96)) !important; }
-.toast-err  { background: linear-gradient(135deg, rgba(220,38,38,.96), rgba(190,18,60,.96)) !important; }
-
-/* ─── 23. KBD SHORTCUTS ─────────────────────────────────────── */
-.ks-box { border-radius: 20px !important; }
-.ks-title { font-family: 'Syne', sans-serif !important; font-size: 18px !important; }
-.ks-key { font-family: 'JetBrains Mono', monospace !important; border-radius: 6px !important; }
-
-/* ─── 24. EMPTY STATES ──────────────────────────────────────── */
-.empty-title { font-family: 'Syne', sans-serif !important; font-size: 18px !important; }
-
-/* ─── 25. CARD LABELS ───────────────────────────────────────── */
-.card-lbl {
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 9px !important;
-  letter-spacing: 2px !important;
-}
-
-/* ─── 26. SCROLLBAR ─────────────────────────────────────────── */
-::-webkit-scrollbar { width: 5px; height: 5px }
-::-webkit-scrollbar-thumb {
-  background: rgba(255,208,96,0.22);
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover { background: rgba(255,208,96,0.4); }
-::-webkit-scrollbar-track { background: transparent }
-
-/* ─── 27. LIGHT THEME ENHANCEMENTS ─────────────────────────── */
-[data-theme="light"] {
-  --bg:    #F2EFE8;
-  --s1:    #FFFFFF;
-  --s2:    #F8F5EF;
-  --s3:    #EEEAE1;
-  --s4:    #E4DFCF;
-  --s5:    #DAD4C0;
-  --border:  rgba(0,0,0,0.07);
-  --border2: rgba(0,0,0,0.11);
-  --border3: rgba(0,0,0,0.16);
-  --t1: #0D0D1A;
-  --t2: #4A4A72;
-  --t3: #8888AA;
-  --t4: #B8B8CC;
-  --gold-dim: rgba(205,145,30,0.12);
-  --gold-mid: rgba(205,145,30,0.26);
-}
-
-[data-theme="light"] .sidebar {
-  background: linear-gradient(180deg, #FFFFFF 0%, #F8F5EF 100%) !important;
-  border-right: 1px solid rgba(0,0,0,0.07) !important;
-}
-
-[data-theme="light"] .bottom-nav {
-  background: rgba(255,255,255,0.95) !important;
-  border-top: 1px solid rgba(0,0,0,0.08) !important;
-}
-
-[data-theme="light"] .bnav-item { color: #888 !important; }
-[data-theme="light"] .bnav-item.active { color: #C9820A !important; background: rgba(205,145,30,0.10) !important; }
-
-[data-theme="light"] .card { box-shadow: var(--sh-sm) !important; }
-
-[data-theme="light"] .hero-streak {
-  background: linear-gradient(135deg, #FFF8E8 0%, #FFFBF0 100%) !important;
-  border-color: rgba(205,145,30,0.3) !important;
-}
-
-[data-theme="light"] .hs-num {
-  background: linear-gradient(135deg, #C9820A 0%, #A06010 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
-}
-
-[data-theme="light"] .sb-streak-num {
-  background: linear-gradient(135deg, #C9820A 0%, #A06010 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
-}
-
-[data-theme="light"] .nav-item:hover { background: rgba(0,0,0,0.05) !important; }
-[data-theme="light"] .nav-item.active {
-  background: linear-gradient(135deg, rgba(205,145,30,0.12), rgba(205,145,30,0.05)) !important;
-  box-shadow: inset 3px 0 0 #C9820A !important;
-  color: #C9820A !important;
-}
-
-/* ─── 28. IMPROVED MOBILE BREAKPOINTS ───────────────────────── */
-@media (max-width: 880px) {
-  .sidebar { display: none }
-  .bottom-nav { display: flex }
-  .main {
-    margin-left: 0;
-    padding: 22px 16px 96px;
-  }
-  .g4 { grid-template-columns: 1fr 1fr !important }
-  .pg-title { font-size: 24px !important; }
-}
-
-@media (max-width: 660px) {
-  .g2 { grid-template-columns: 1fr !important }
-  .g3 { grid-template-columns: 1fr 1fr !important }
-  .main { padding: 18px 14px 92px; }
-  .pg-title { font-size: 22px !important; }
-  .sc-val { font-size: 24px !important; }
-  .modal { padding: 22px 18px !important; }
-  .bnav-item { padding: 5px 6px !important; font-size: 8.5px !important; }
-  .bnav-icon { font-size: 19px !important; }
-  .day-selector { gap: 5px !important; }
-  .day-btn { padding: 8px 4px !important; font-size: 10px !important; }
-}
-
-@media (max-width: 480px) {
-  .g3, .g4 { grid-template-columns: 1fr 1fr !important }
-  .main { padding: 14px 12px 88px !important; }
-  .pg-title { font-size: 20px !important; }
-  .sc { padding: 14px 15px !important; }
-  .sc-val { font-size: 22px !important; }
-  .sc-icon { width: 32px !important; height: 32px !important; margin-bottom: 12px !important; }
-  .card { border-radius: 14px !important; }
-  .modal { border-radius: 16px !important; padding: 18px !important; max-width: calc(100vw - 24px) !important; }
-  .modal-title { font-size: 17px !important; }
-  .hs-num { font-size: 40px !important; }
-  .tw-name { font-size: 20px !important; }
-  .btn-sm { font-size: 11px !important; padding: 5px 10px !important; }
-  .pg-sub { font-size: 11.5px !important; }
-  .sets-table th { font-size: 7.5px !important; letter-spacing: 1px !important; }
-  .set-input { width: 48px !important; font-size: 11px !important; }
-}
-
-@media (max-width: 380px) {
-  .g3, .g4 { grid-template-columns: 1fr !important }
-  .main { padding: 12px 10px 84px !important; }
-  .bnav-item { font-size: 7.5px !important; padding: 4px 5px !important; }
-  .bnav-icon { font-size: 17px !important; }
-}
-
-/* ─── 29. MACRO TILES ───────────────────────────────────────── */
-.macro-tile { border-radius: 12px !important; }
-.macro-val { font-family: 'Syne', sans-serif !important; }
-
-/* ─── 30. HABIT SCORE RING ──────────────────────────────────── */
-.habits-score-pct { font-family: 'Syne', sans-serif !important; }
-
-/* ─── 31. IMPROVED PROGRESS BARS ───────────────────────────── */
-.prog-fill { background: var(--grad-gold) !important; border-radius: 4px !important; }
-.prog-rail { border-radius: 4px !important; height: 5px !important; }
-
-/* ─── 32. COMPLETE BAR ──────────────────────────────────────── */
-.prog-label { font-family: 'JetBrains Mono', monospace !important; font-size: 9px !important; }
-
-/* ─── 33. WEEK SUMMARY GRID ─────────────────────────────────── */
-.wsg-dot {
-  width: 32px !important;
-  height: 32px !important;
-  border-radius: 50% !important;
-}
-
-/* ─── 34. DASH QUICK ACTION BUTTONS ────────────────────────── */
-.dash-quick-btn {
-  border-radius: 14px !important;
-  background: var(--s1) !important;
-  border: 1px solid var(--border) !important;
-  transition: all 200ms ease !important;
-  font-family: 'DM Sans', sans-serif !important;
-  font-weight: 600 !important;
-}
-.dash-quick-btn:hover {
-  background: var(--s2) !important;
-  border-color: var(--border2) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: var(--sh-sm) !important;
-}
-.dash-quick-btn .dqb-icon { font-size: 22px !important; }
-
-/* ─── 35. REST TIMER OVERLAY ────────────────────────────────── */
-#rest-timer-overlay {
-  border-radius: 18px !important;
-  border: 1px solid var(--border2) !important;
-}
-.rt-time {
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 24px !important;
-  color: var(--gold) !important;
-}
-
-/* ─── 36. FOOD ROWS ─────────────────────────────────────────── */
-.food-name { font-weight: 600 !important; font-size: 13.5px !important; }
-
-/* ─── 37. CATEGORY TABS ─────────────────────────────────────── */
-.cat-tab {
-  border-radius: 20px !important;
-  font-family: 'DM Sans', sans-serif !important;
-  font-size: 11.5px !important;
-  font-weight: 600 !important;
-}
-
-/* ─── 38. MEAL CARDS ────────────────────────────────────────── */
-.meal-card { border-radius: 14px !important; }
-.meal-name { font-family: 'Syne', sans-serif !important; font-size: 14px !important; }
-
-/* ─── 39. GRADIENT OVERLAYS ON BACKGROUNDS ──────────────────── */
-body {
-  background: radial-gradient(ellipse 80% 40% at 50% -10%, rgba(255,208,96,0.04), transparent),
-              var(--bg) !important;
-}
-
-/* ─── 40. GLOWING ACTIVE INDICATOR ─────────────────────────── */
-.bnav-item.active .bnav-icon {
-  filter: drop-shadow(0 0 8px rgba(255,208,96,0.5));
-}
-
-/* ─── 41. NOTIFICATION BADGE ────────────────────────────────── */
-.nav-badge {
-  font-family: 'JetBrains Mono', monospace !important;
-  border-radius: 10px !important;
-  font-size: 9px !important;
-  padding: 2px 6px !important;
-}
-
-/* ─── 42. REVIEW / JOURNAL / RECOVERY CARDS ─────────────────── */
-.grade-badge { font-family: 'Syne', sans-serif !important; }
-
-/* ─── 43. ANALYZER UPLOAD ───────────────────────────────────── */
-.analyzer-upload { border-radius: 16px !important; }
-
-/* ─── 44. SETTING ROWS ──────────────────────────────────────── */
-.setting-label { font-family: 'DM Sans', sans-serif !important; font-size: 13.5px !important; }
-.setting-input {
-  font-family: 'DM Sans', sans-serif !important;
-  border-radius: 9px !important;
-  background: var(--s2) !important;
-  border: 1.5px solid var(--border2) !important;
-}
-.setting-input:focus { border-color: var(--gold) !important; }
-
-/* ─── 45. CONSISTENCY HEATMAP ───────────────────────────────── */
-.cht-cell { border-radius: 4px !important; }
-
-/* ─── 46. MAIN CONTENT AREA ─────────────────────────────────── */
-.main { padding: 30px 28px 110px; }
-
-/* ─── 47. SMOOTH VIEW ANIMATION ────────────────────────────── */
-@keyframes viewIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: none; }
-}
-
-/* ─── 48. EXTRA DEPTH ON SIDEBAR BRAND ──────────────────────── */
-.sb-brand {
-  padding: 4px 6px 20px !important;
-  border-bottom: 1px solid rgba(255,208,96,0.08) !important;
-  margin-bottom: 16px !important;
-}
-
-/* ─── 49. WEEK DAY BUTTONS ──────────────────────────────────── */
-.week-day-btn {
-  border-radius: 10px !important;
-  font-family: 'DM Sans', sans-serif !important;
-  font-weight: 600 !important;
-}
-.week-day-btn.active {
-  background: rgba(255,208,96,0.12) !important;
-  border-color: rgba(255,208,96,0.35) !important;
-  color: var(--gold) !important;
-}
-
-/* ─── 50. TODO CARDS ─────────────────────────────────────────── */
-.todo-card { border-radius: 14px !important; }
-.todo-check { border-radius: 7px !important; }
-
-/* ─── 51. MOBILE DRAWER TILES ────────────────────────────────── */
-.mob-nav-tile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  padding: 12px 6px 10px;
-  background: var(--s2);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  cursor: pointer;
-  transition: all 200ms ease;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--t2);
-  line-height: 1.2;
-  text-align: center;
-  word-break: break-word;
-}
-.mob-nav-tile:hover,
-.mob-nav-tile:active {
-  background: var(--s3);
-  border-color: var(--border2);
-  color: var(--t1);
-  transform: scale(0.97);
-}
-.mob-nav-tile.active {
-  background: rgba(255,208,96,0.12);
-  border-color: rgba(255,208,96,0.3);
-  color: var(--gold);
-}
-
-/* Mobile drawer slide-up animation */
-@keyframes drawerUp {
-  from { transform: translateY(100%); }
-  to   { transform: translateY(0); }
-}
-#mobile-drawer { animation: drawerUp 0.32s cubic-bezier(0.32, 0.72, 0, 1) }
-
-/* ─── 52. MOBILE MENU BTN STYLING ───────────────────────────── */
-#mobile-menu-btn.menu-open {
-  color: var(--gold) !important;
-  background: rgba(255,208,96,0.10) !important;
-}
-
-/* ─── 53. LIGHT THEME DRAWER ─────────────────────────────────── */
-[data-theme="light"] #mobile-drawer {
-  background: #FFFFFF;
-  border-top: 1px solid rgba(0,0,0,0.1);
-}
-[data-theme="light"] .mob-nav-tile {
-  background: #F8F5EF;
-  border-color: rgba(0,0,0,0.08);
-  color: #555;
-}
-[data-theme="light"] .mob-nav-tile:hover {
-  background: #EEEAE1;
-  color: #222;
-}
-[data-theme="light"] #mobile-drawer-overlay {
-  background: rgba(0,0,0,0.4);
-}
+.prg-tab.active { color:var(--gold); border-bottom-color:var(--gold); font-weight:600 }
+.prg-tab:hover:not(.active) { color:var(--t1); background:var(--s2); border-radius:6px 6px 0 0 }
+
+/* ══ SCROLL IMPROVEMENT ════════════════════════════════════════ */
+.main { scroll-behavior:smooth }
 </style>
 </head>
 <body>
@@ -2863,8 +2084,8 @@ body {
   </div>
 
   <div class="sb-section">Main</div>
-  <button class="nav-item" data-view="dashboard"><span class="nav-icon">⊞</span> Dashboard</button>
-  <button class="nav-item active" data-view="workout"><span class="nav-icon">💪</span> Training</button>
+  <button class="nav-item active" data-view="dashboard"><span class="nav-icon">⊞</span> Dashboard</button>
+  <button class="nav-item" data-view="workout"><span class="nav-icon">💪</span> Training</button>
   <button class="nav-item" data-view="logs"><span class="nav-icon">📓</span> Workout Logs</button>
 
   <div class="sb-section" style="margin-top:8px">Nutrition</div>
@@ -2908,141 +2129,22 @@ body {
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <button class="bnav-item" data-view="dashboard"><span class="bnav-icon">⊞</span>Home</button>
-  <button class="bnav-item active" data-view="workout"><span class="bnav-icon">💪</span>Train</button>
-  <button class="bnav-item" data-view="diet"><span class="bnav-icon">🥗</span>Diet</button>
+  <button class="bnav-item active" data-view="dashboard"><span class="bnav-icon">⊞</span>Home</button>
+  <button class="bnav-item" data-view="workout"><span class="bnav-icon">💪</span>Train</button>
   <button class="bnav-item" data-view="habits"><span class="bnav-icon">✅</span>Habits</button>
+  <button class="bnav-item" data-view="diet"><span class="bnav-icon">🥗</span>Diet</button>
   <button class="bnav-item" data-view="progress"><span class="bnav-icon">📈</span>Stats</button>
-  <button class="bnav-item" id="mobile-menu-btn" onclick="toggleMobileMenu()"><span class="bnav-icon">☰</span>More</button>
+  <button class="bnav-item" data-view="journal"><span class="bnav-icon">📔</span>Journal</button>
+  <button class="bnav-item" data-view="review"><span class="bnav-icon">📅</span>Review</button>
 </nav>
-
-<!-- MOBILE MENU DRAWER -->
-<div id="mobile-drawer-overlay" onclick="closeMobileMenu()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:998;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:overlayIn .2s ease"></div>
-<div id="mobile-drawer" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;background:var(--s1);border-radius:24px 24px 0 0;border-top:1px solid var(--border2);padding:0 0 max(24px,env(safe-area-inset-bottom));max-height:88vh;overflow-y:auto;box-shadow:0 -24px 64px rgba(0,0,0,.7);">
-  <!-- Handle bar -->
-  <div style="display:flex;justify-content:center;padding:12px 0 4px">
-    <div style="width:40px;height:4px;border-radius:2px;background:var(--border3)"></div>
-  </div>
-  <!-- Header -->
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 14px;border-bottom:1px solid var(--border)">
-    <div style="display:flex;align-items:center;gap:10px">
-      <div style="width:32px;height:32px;border-radius:9px;background:var(--grad-gold);display:grid;place-items:center;font-family:'Syne',sans-serif;font-weight:900;font-size:14px;color:#000;box-shadow:0 4px 14px rgba(255,208,96,0.4)">F</div>
-      <div>
-        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--t1)">FitOS</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--t3)">Anurag · 2026</div>
-      </div>
-    </div>
-    <button onclick="closeMobileMenu()" style="width:32px;height:32px;border-radius:50%;background:var(--s3);border:1px solid var(--border2);display:grid;place-items:center;font-size:16px;color:var(--t2);cursor:pointer">×</button>
-  </div>
-
-  <!-- Nav Grid -->
-  <div style="padding:16px 16px 8px">
-
-    <!-- MAIN -->
-    <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--t4);text-transform:uppercase;padding:0 4px;margin-bottom:8px">Main</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">
-      <button class="mob-nav-tile" data-view="dashboard" onclick="navigate('dashboard');closeMobileMenu()">
-        <span style="font-size:24px">⊞</span><span>Dashboard</span>
-      </button>
-      <button class="mob-nav-tile" data-view="workout" onclick="navigate('workout');closeMobileMenu()">
-        <span style="font-size:24px">💪</span><span>Training</span>
-      </button>
-      <button class="mob-nav-tile" data-view="logs" onclick="navigate('logs');closeMobileMenu()">
-        <span style="font-size:24px">📓</span><span>Logs</span>
-      </button>
-      <button class="mob-nav-tile" data-view="progress" onclick="navigate('progress');closeMobileMenu()">
-        <span style="font-size:24px">📈</span><span>Progress</span>
-      </button>
-    </div>
-
-    <!-- NUTRITION -->
-    <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--t4);text-transform:uppercase;padding:0 4px;margin-bottom:8px">Nutrition</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">
-      <button class="mob-nav-tile" data-view="diet" onclick="navigate('diet');closeMobileMenu()">
-        <span style="font-size:24px">🥗</span><span>Diet Log</span>
-      </button>
-      <button class="mob-nav-tile" data-view="diet-menu" onclick="navigate('diet-menu');closeMobileMenu()">
-        <span style="font-size:24px">📋</span><span>Diet Menu</span>
-      </button>
-      <button class="mob-nav-tile" data-view="analyzer" onclick="navigate('analyzer');closeMobileMenu()">
-        <span style="font-size:24px">🧠</span><span>Analyzer</span>
-      </button>
-    </div>
-
-    <!-- TRACKING -->
-    <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--t4);text-transform:uppercase;padding:0 4px;margin-bottom:8px">Tracking</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">
-      <button class="mob-nav-tile" data-view="bodystats" onclick="navigate('bodystats');closeMobileMenu()">
-        <span style="font-size:24px">📐</span><span>Body Stats</span>
-      </button>
-      <button class="mob-nav-tile" data-view="habits" onclick="navigate('habits');closeMobileMenu()">
-        <span style="font-size:24px">✅</span><span>Habits</span>
-      </button>
-      <button class="mob-nav-tile" data-view="achievements" onclick="navigate('achievements');closeMobileMenu()">
-        <span style="font-size:24px">🏆</span><span>Achieved</span>
-      </button>
-      <button class="mob-nav-tile" data-view="journal" onclick="navigate('journal');closeMobileMenu()">
-        <span style="font-size:24px">📔</span><span>Journal</span>
-      </button>
-      <button class="mob-nav-tile" data-view="cardio" onclick="navigate('cardio');closeMobileMenu()">
-        <span style="font-size:24px">🏃</span><span>Cardio</span>
-      </button>
-      <button class="mob-nav-tile" data-view="recovery" onclick="navigate('recovery');closeMobileMenu()">
-        <span style="font-size:24px">💚</span><span>Recovery</span>
-      </button>
-      <button class="mob-nav-tile" data-view="volume" onclick="navigate('volume');closeMobileMenu()">
-        <span style="font-size:24px">📦</span><span>Volume</span>
-      </button>
-      <button class="mob-nav-tile" data-view="review" onclick="navigate('review');closeMobileMenu()">
-        <span style="font-size:24px">📅</span><span>Review</span>
-      </button>
-    </div>
-
-    <!-- TOOLS & ACCOUNT -->
-    <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--t4);text-transform:uppercase;padding:0 4px;margin-bottom:8px">Tools &amp; Account</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">
-      <button class="mob-nav-tile" data-view="tools" onclick="navigate('tools');closeMobileMenu()">
-        <span style="font-size:24px">🔧</span><span>Tools</span>
-      </button>
-      <button class="mob-nav-tile" data-view="rulebook" onclick="navigate('rulebook');closeMobileMenu()">
-        <span style="font-size:24px">📖</span><span>Rule Book</span>
-      </button>
-      <button class="mob-nav-tile" data-view="todo" onclick="navigate('todo');closeMobileMenu()">
-        <span style="font-size:24px">📌</span><span>To-Do</span>
-      </button>
-      <button class="mob-nav-tile" data-view="notifications" onclick="navigate('notifications');closeMobileMenu()">
-        <span style="font-size:24px">🔔</span><span>Alerts</span>
-      </button>
-      <button class="mob-nav-tile" data-view="settings" onclick="navigate('settings');closeMobileMenu()">
-        <span style="font-size:24px">⚙️</span><span>Settings</span>
-      </button>
-      <button class="mob-nav-tile" onclick="toggleTheme();closeMobileMenu()">
-        <span style="font-size:24px" id="mob-theme-icon">🌙</span><span id="mob-theme-lbl">Theme</span>
-      </button>
-    </div>
-
-    <!-- Streak bar at bottom -->
-    <div style="background:linear-gradient(135deg,rgba(255,208,96,0.10),rgba(255,208,96,0.04));border:1px solid rgba(255,208,96,0.2);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:14px">
-      <div style="font-size:26px">🔥</div>
-      <div>
-        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--gold);line-height:1" id="mob-streak-num">0</div>
-        <div style="font-size:10px;color:var(--t3);margin-top:2px">day streak</div>
-      </div>
-      <div style="margin-left:auto;text-align:right">
-        <div style="font-size:10px;color:var(--t3)">Best streak</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t2);font-weight:600" id="mob-streak-best">0 days</div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- MAIN CONTENT -->
 <main class="main">
-  <div id="view-dashboard" class="view">
+  <div id="view-dashboard" class="view active">
     <div class="pg-hdr">
       <div class="pg-hdr-row">
         <div>
-          <div class="pg-eyebrow">Week 14 · Sun, 5 Apr</div>
+          <div class="pg-eyebrow">Week 16 · Mon, 13 Apr</div>
           <div class="pg-title">Good morning, Anurag 👋</div>
           <div class="pg-sub">Fat Loss mode · 1850 kcal / 130g protein target</div>
         </div>
@@ -3126,13 +2228,11 @@ body {
     <!-- TODAY CARD + NUTRITION -->
     <div class="g2" style="margin-bottom:14px">
       
-        <div class="card cp" style="display:flex;align-items:center;gap:16px">
-          <div style="font-size:40px">🛌</div>
-          <div>
-            <div style="font-family:&#39;Plus Jakarta Sans&#39;,sans-serif;font-weight:800;font-size:16px">Rest Day</div>
-            <div style="font-size:11px;color:var(--t3);margin-top:3px">Recover. Sleep 7h+. Eat protein.</div>
-            
-          </div>
+        <div class="today-workout-card" onclick="navigate(&#39;workout&#39;)">
+          <div class="tw-tag">Today · Tuesday</div>
+          <div class="tw-name">PULL</div>
+          <div class="tw-meta">7 exercises · Hypertrophy</div>
+          
         </div>
       
 
@@ -3180,37 +2280,37 @@ body {
         <div class="habit-row ">
             <div>
               <div class="habit-name">🚶 8–10k Steps</div>
-              <div class="habit-week-dots"><div class="hwdot" title="2026-03-30"></div><div class="hwdot" title="2026-03-31"></div><div class="hwdot" title="2026-04-01"></div><div class="hwdot" title="2026-04-02"></div><div class="hwdot" title="2026-04-03"></div><div class="hwdot" title="2026-04-04"></div><div class="hwdot today-dot" title="2026-04-05"></div></div>
+              <div class="habit-week-dots"><div class="hwdot" title="2026-04-07"></div><div class="hwdot" title="2026-04-08"></div><div class="hwdot" title="2026-04-09"></div><div class="hwdot" title="2026-04-10"></div><div class="hwdot" title="2026-04-11"></div><div class="hwdot" title="2026-04-12"></div><div class="hwdot today-dot" title="2026-04-13"></div></div>
             </div>
             <button class="toggle " onclick="toggleHabit(&#39;h1&#39;);renderDashboard()"></button>
           </div><div class="habit-row ">
             <div>
               <div class="habit-name">💧 2.5–3L Water</div>
-              <div class="habit-week-dots"><div class="hwdot" title="2026-03-30"></div><div class="hwdot" title="2026-03-31"></div><div class="hwdot" title="2026-04-01"></div><div class="hwdot" title="2026-04-02"></div><div class="hwdot" title="2026-04-03"></div><div class="hwdot" title="2026-04-04"></div><div class="hwdot today-dot" title="2026-04-05"></div></div>
+              <div class="habit-week-dots"><div class="hwdot" title="2026-04-07"></div><div class="hwdot" title="2026-04-08"></div><div class="hwdot" title="2026-04-09"></div><div class="hwdot" title="2026-04-10"></div><div class="hwdot" title="2026-04-11"></div><div class="hwdot" title="2026-04-12"></div><div class="hwdot today-dot" title="2026-04-13"></div></div>
             </div>
             <button class="toggle " onclick="toggleHabit(&#39;h2&#39;);renderDashboard()"></button>
           </div><div class="habit-row ">
             <div>
               <div class="habit-name">😴 7h+ Sleep</div>
-              <div class="habit-week-dots"><div class="hwdot" title="2026-03-30"></div><div class="hwdot" title="2026-03-31"></div><div class="hwdot" title="2026-04-01"></div><div class="hwdot" title="2026-04-02"></div><div class="hwdot" title="2026-04-03"></div><div class="hwdot" title="2026-04-04"></div><div class="hwdot today-dot" title="2026-04-05"></div></div>
+              <div class="habit-week-dots"><div class="hwdot" title="2026-04-07"></div><div class="hwdot" title="2026-04-08"></div><div class="hwdot" title="2026-04-09"></div><div class="hwdot" title="2026-04-10"></div><div class="hwdot" title="2026-04-11"></div><div class="hwdot" title="2026-04-12"></div><div class="hwdot today-dot" title="2026-04-13"></div></div>
             </div>
             <button class="toggle " onclick="toggleHabit(&#39;h3&#39;);renderDashboard()"></button>
           </div><div class="habit-row ">
             <div>
               <div class="habit-name">🥚 3–4 Eggs Daily</div>
-              <div class="habit-week-dots"><div class="hwdot" title="2026-03-30"></div><div class="hwdot" title="2026-03-31"></div><div class="hwdot" title="2026-04-01"></div><div class="hwdot" title="2026-04-02"></div><div class="hwdot" title="2026-04-03"></div><div class="hwdot" title="2026-04-04"></div><div class="hwdot today-dot" title="2026-04-05"></div></div>
+              <div class="habit-week-dots"><div class="hwdot" title="2026-04-07"></div><div class="hwdot" title="2026-04-08"></div><div class="hwdot" title="2026-04-09"></div><div class="hwdot" title="2026-04-10"></div><div class="hwdot" title="2026-04-11"></div><div class="hwdot" title="2026-04-12"></div><div class="hwdot today-dot" title="2026-04-13"></div></div>
             </div>
             <button class="toggle " onclick="toggleHabit(&#39;h4&#39;);renderDashboard()"></button>
           </div><div class="habit-row ">
             <div>
               <div class="habit-name">🚫 No Late Snacking</div>
-              <div class="habit-week-dots"><div class="hwdot" title="2026-03-30"></div><div class="hwdot" title="2026-03-31"></div><div class="hwdot" title="2026-04-01"></div><div class="hwdot" title="2026-04-02"></div><div class="hwdot" title="2026-04-03"></div><div class="hwdot" title="2026-04-04"></div><div class="hwdot today-dot" title="2026-04-05"></div></div>
+              <div class="habit-week-dots"><div class="hwdot" title="2026-04-07"></div><div class="hwdot" title="2026-04-08"></div><div class="hwdot" title="2026-04-09"></div><div class="hwdot" title="2026-04-10"></div><div class="hwdot" title="2026-04-11"></div><div class="hwdot" title="2026-04-12"></div><div class="hwdot today-dot" title="2026-04-13"></div></div>
             </div>
             <button class="toggle " onclick="toggleHabit(&#39;h5&#39;);renderDashboard()"></button>
           </div><div class="habit-row ">
             <div>
               <div class="habit-name">🧘 10 min Stretch</div>
-              <div class="habit-week-dots"><div class="hwdot" title="2026-03-30"></div><div class="hwdot" title="2026-03-31"></div><div class="hwdot" title="2026-04-01"></div><div class="hwdot" title="2026-04-02"></div><div class="hwdot" title="2026-04-03"></div><div class="hwdot" title="2026-04-04"></div><div class="hwdot today-dot" title="2026-04-05"></div></div>
+              <div class="habit-week-dots"><div class="hwdot" title="2026-04-07"></div><div class="hwdot" title="2026-04-08"></div><div class="hwdot" title="2026-04-09"></div><div class="hwdot" title="2026-04-10"></div><div class="hwdot" title="2026-04-11"></div><div class="hwdot" title="2026-04-12"></div><div class="hwdot today-dot" title="2026-04-13"></div></div>
             </div>
             <button class="toggle " onclick="toggleHabit(&#39;h6&#39;);renderDashboard()"></button>
           </div>
@@ -3253,842 +2353,7 @@ body {
       <div class="empty-state"><div class="empty-icon">🏆</div><div class="empty-title">No PRs yet</div><div class="empty-sub">Log sets with weight to track personal records</div></div>
     </div>
   </div>
-  <div id="view-workout" class="view active">
-    <div class="pg-hdr">
-      <div class="pg-hdr-row">
-        <div>
-          <div class="pg-eyebrow">Training</div>
-          <div class="pg-title">PUSH — Monday</div>
-          <div class="pg-sub">Hypertrophy · 7 exercises · Log sets · Complete</div>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <div class="session-timer">⏱ <span id="session-timer-val">00:14</span></div>
-          <button class="btn btn-ghost btn-sm" onclick="setRest(120)">⏰ Rest</button>
-          <button class="btn btn-ghost btn-sm" onclick="openWorkoutSummaryModal()">📊 Summary</button>
-          <button class="btn btn-danger btn-sm" onclick="clearSession()" title="Abandon session">✕ Clear</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="day-selector">
-      <div style="position:relative;display:flex;flex-direction:column">
-          <button class="day-btn active  " onclick="selectDay(1)">
-            <div>Mon</div>
-            <div class="day-btn-name">PUSH</div>
-          </button>
-          <button style="position:absolute;top:2px;right:2px;font-size:8px;color:var(--t4);padding:2px 3px;border-radius:3px;cursor:pointer;transition:color var(--tr)" onmouseover="this.style.color=&#39;var(--gold)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="event.stopPropagation();openEditWorkoutDay(1)" title="Edit day">✎</button>
-        </div><div style="position:relative;display:flex;flex-direction:column">
-          <button class="day-btn   " onclick="selectDay(2)">
-            <div>Tue</div>
-            <div class="day-btn-name">PULL</div>
-          </button>
-          <button style="position:absolute;top:2px;right:2px;font-size:8px;color:var(--t4);padding:2px 3px;border-radius:3px;cursor:pointer;transition:color var(--tr)" onmouseover="this.style.color=&#39;var(--gold)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="event.stopPropagation();openEditWorkoutDay(2)" title="Edit day">✎</button>
-        </div><div style="position:relative;display:flex;flex-direction:column">
-          <button class="day-btn   " onclick="selectDay(3)">
-            <div>Wed</div>
-            <div class="day-btn-name">LEGS</div>
-          </button>
-          <button style="position:absolute;top:2px;right:2px;font-size:8px;color:var(--t4);padding:2px 3px;border-radius:3px;cursor:pointer;transition:color var(--tr)" onmouseover="this.style.color=&#39;var(--gold)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="event.stopPropagation();openEditWorkoutDay(3)" title="Edit day">✎</button>
-        </div><div style="position:relative;display:flex;flex-direction:column">
-          <button class="day-btn  is-rest " onclick="selectDay(4)">
-            <div>Thu</div>
-            <div class="day-btn-name">REST</div>
-          </button>
-          <button style="position:absolute;top:2px;right:2px;font-size:8px;color:var(--t4);padding:2px 3px;border-radius:3px;cursor:pointer;transition:color var(--tr)" onmouseover="this.style.color=&#39;var(--gold)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="event.stopPropagation();openEditWorkoutDay(4)" title="Edit day">✎</button>
-        </div><div style="position:relative;display:flex;flex-direction:column">
-          <button class="day-btn   " onclick="selectDay(5)">
-            <div>Fri</div>
-            <div class="day-btn-name">UPPER</div>
-          </button>
-          <button style="position: absolute; top: 2px; right: 2px; font-size: 8px; color: var(--t4); padding: 2px 3px; border-radius: 3px; cursor: pointer; transition: color var(--tr);" onmouseover="this.style.color=&#39;var(--gold)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="event.stopPropagation();openEditWorkoutDay(5)" title="Edit day">✎</button>
-        </div><div style="position:relative;display:flex;flex-direction:column">
-          <button class="day-btn   " onclick="selectDay(6)">
-            <div>Sat</div>
-            <div class="day-btn-name">LOWER</div>
-          </button>
-          <button style="position:absolute;top:2px;right:2px;font-size:8px;color:var(--t4);padding:2px 3px;border-radius:3px;cursor:pointer;transition:color var(--tr)" onmouseover="this.style.color=&#39;var(--gold)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="event.stopPropagation();openEditWorkoutDay(6)" title="Edit day">✎</button>
-        </div><div style="position:relative;display:flex;flex-direction:column">
-          <button class="day-btn  is-rest " onclick="selectDay(7)">
-            <div>Sun</div>
-            <div class="day-btn-name">REST</div>
-          </button>
-          <button style="position:absolute;top:2px;right:2px;font-size:8px;color:var(--t4);padding:2px 3px;border-radius:3px;cursor:pointer;transition:color var(--tr)" onmouseover="this.style.color=&#39;var(--gold)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="event.stopPropagation();openEditWorkoutDay(7)" title="Edit day">✎</button>
-        </div>
-    </div>
-
-    
-      <div class="card" style="margin-bottom:14px">
-        <div class="complete-bar">
-          <div>
-            <div class="prog-label">SETS COMPLETED</div>
-            <div class="prog-rail"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <span style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:11px;color:var(--t3)">0/21 sets</span>
-            <button class="btn btn-primary btn-sm" onclick="completeWorkout()">Complete Workout</button>
-          </div>
-        </div>
-        <div class="cardio-strip">🏃 POST-WORKOUT CARDIO: 10 min incline walk post · 8–12% · 4.5–5 km/h</div>
-      </div>
-
-      <div id="exercises-list">
-        
-    <div class="ex-card " id="ex-card-0" style="">
-      <div class="ex-header" onclick="toggleExCard(0)">
-        <div style="flex:1;min-width:0">
-          <div class="ex-name" style="">
-            Barbell Bench Press
-            
-          </div>
-          <div class="ex-meta">Chest (Mid) · 4 sets · 6–8 reps · 2–3 min · <span style="color:var(--t3)">0/4 done</span></div>
-        </div>
-        <div class="ex-pills" style="flex-shrink:0">
-          <span class="pill pill-blue" style="font-size:7px">RIR 2</span>
-          
-          <span style="color:var(--t3);font-size:12px">▾</span>
-        </div>
-      </div>
-      <div class="ex-body" id="ex-body-0">
-        
-        
-        
-        <!-- BULK FILL BAR -->
-        <div class="bulk-fill-row" id="bulk-fill-0" style="display:none">
-          <span style="font-size:10px;color:var(--gold);font-weight:600;white-space:nowrap">⚡ Fill All:</span>
-          <input class="bulk-fill-inp" id="bulk-w-0" type="number" step="0.5" placeholder="kg">
-          <span style="font-size:11px;color:var(--t3)">×</span>
-          <input class="bulk-fill-inp" id="bulk-r-0" type="number" placeholder="reps">
-          <button class="btn btn-primary btn-xs" onclick="bulkFillSets(0)">Apply</button>
-          <button class="btn btn-ghost btn-xs" onclick="document.getElementById(&#39;bulk-fill-0&#39;).style.display=&#39;none&#39;">✕</button>
-        </div>
-
-        <table class="sets-table">
-          <thead><tr>
-            <th style="width:30px">SET</th>
-            <th>WEIGHT (kg)</th><th></th>
-            <th>REPS</th>
-            <th style="width:44px;font-size:7px">RPE</th>
-            <th>DONE</th>
-            <th style="width:22px"></th>
-          </tr></thead>
-          <tbody>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">1</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(0,0,&#39;w&#39;,this.value);updateORM(0)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(0,0,&#39;r&#39;,this.value);updateORM(0)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(0,0,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(0,0)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(0,0)">×</button></td>
-              </tr>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">2</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(0,1,&#39;w&#39;,this.value);updateORM(0)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(0,1,&#39;r&#39;,this.value);updateORM(0)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(0,1,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(0,1)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(0,1)">×</button></td>
-              </tr>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">3</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(0,2,&#39;w&#39;,this.value);updateORM(0)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(0,2,&#39;r&#39;,this.value);updateORM(0)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(0,2,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(0,2)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(0,2)">×</button></td>
-              </tr>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">4</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(0,3,&#39;w&#39;,this.value);updateORM(0)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(0,3,&#39;r&#39;,this.value);updateORM(0)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(0,3,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(0,3)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(0,3)">×</button></td>
-              </tr>
-            
-          </tbody>
-        </table>
-        
-        <div class="orm-inline" id="orm-display-0" style="display:none"></div>
-        
-        <!-- MAIN ACTION ROW -->
-        <div style="display:flex;gap:5px;margin-top:10px;flex-wrap:wrap">
-          <button class="btn btn-ghost btn-xs" onclick="addSet(0)">+ Set</button>
-          <button class="btn btn-ghost btn-xs" onclick="addWarmupSet(0)">+ Warmup</button>
-          <button class="btn btn-ghost btn-xs" onclick="setRest(180)">⏱ Rest</button>
-          <button class="btn btn-ghost btn-xs" onclick="removeLastSet(0)">– Set</button>
-          <button class="btn btn-ghost btn-xs accent" onclick="document.getElementById(&#39;bulk-fill-0&#39;).style.display=(document.getElementById(&#39;bulk-fill-0&#39;).style.display===&#39;none&#39;?&#39;flex&#39;:&#39;none&#39;)">⚡ Bulk Fill</button>
-        </div>
-        
-        <!-- EXERCISE MANAGEMENT BAR -->
-        <div class="ex-actions-bar">
-          
-          <button class="ex-action-btn" onclick="moveExercise(0,1)" title="Move down">↓ Down</button>
-          <button class="ex-action-btn" onclick="duplicateExercise(0)">⧉ Duplicate</button>
-          <button class="ex-action-btn" onclick="openSwapExercise(0)">⇄ Swap</button>
-          <button class="ex-action-btn" onclick="openEditExerciseMeta(0)">✎ Edit</button>
-          <button class="ex-action-btn" onclick="clearAllSets(0)">🗑 Clear Sets</button>
-          <button class="ex-action-btn danger" onclick="deleteExercise(0)">✕ Delete</button>
-        </div>
-        
-        <textarea class="ex-notes" placeholder="Notes, form cues, feeling, RPE context..." rows="2" onchange="updateNotes(0,this.value)"></textarea>
-      </div>
-    </div>
-  
-    <div class="ex-card " id="ex-card-1" style="">
-      <div class="ex-header" onclick="toggleExCard(1)">
-        <div style="flex:1;min-width:0">
-          <div class="ex-name" style="">
-            Incline DB Press
-            
-          </div>
-          <div class="ex-meta">Chest (Upper) · 3 sets · 8–10 reps · 2 min · <span style="color:var(--t3)">0/3 done</span></div>
-        </div>
-        <div class="ex-pills" style="flex-shrink:0">
-          <span class="pill pill-blue" style="font-size:7px">RIR 2</span>
-          
-          <span style="color:var(--t3);font-size:12px">▾</span>
-        </div>
-      </div>
-      <div class="ex-body" id="ex-body-1">
-        
-        
-        
-        <!-- BULK FILL BAR -->
-        <div class="bulk-fill-row" id="bulk-fill-1" style="display:none">
-          <span style="font-size:10px;color:var(--gold);font-weight:600;white-space:nowrap">⚡ Fill All:</span>
-          <input class="bulk-fill-inp" id="bulk-w-1" type="number" step="0.5" placeholder="kg">
-          <span style="font-size:11px;color:var(--t3)">×</span>
-          <input class="bulk-fill-inp" id="bulk-r-1" type="number" placeholder="reps">
-          <button class="btn btn-primary btn-xs" onclick="bulkFillSets(1)">Apply</button>
-          <button class="btn btn-ghost btn-xs" onclick="document.getElementById(&#39;bulk-fill-1&#39;).style.display=&#39;none&#39;">✕</button>
-        </div>
-
-        <table class="sets-table">
-          <thead><tr>
-            <th style="width:30px">SET</th>
-            <th>WEIGHT (kg)</th><th></th>
-            <th>REPS</th>
-            <th style="width:44px;font-size:7px">RPE</th>
-            <th>DONE</th>
-            <th style="width:22px"></th>
-          </tr></thead>
-          <tbody>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">1</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(1,0,&#39;w&#39;,this.value);updateORM(1)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(1,0,&#39;r&#39;,this.value);updateORM(1)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(1,0,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(1,0)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(1,0)">×</button></td>
-              </tr>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">2</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(1,1,&#39;w&#39;,this.value);updateORM(1)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(1,1,&#39;r&#39;,this.value);updateORM(1)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(1,1,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(1,1)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(1,1)">×</button></td>
-              </tr>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">3</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(1,2,&#39;w&#39;,this.value);updateORM(1)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(1,2,&#39;r&#39;,this.value);updateORM(1)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(1,2,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(1,2)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(1,2)">×</button></td>
-              </tr>
-            
-          </tbody>
-        </table>
-        
-        <div class="orm-inline" id="orm-display-1" style="display:none"></div>
-        
-        <!-- MAIN ACTION ROW -->
-        <div style="display:flex;gap:5px;margin-top:10px;flex-wrap:wrap">
-          <button class="btn btn-ghost btn-xs" onclick="addSet(1)">+ Set</button>
-          <button class="btn btn-ghost btn-xs" onclick="addWarmupSet(1)">+ Warmup</button>
-          <button class="btn btn-ghost btn-xs" onclick="setRest(120)">⏱ Rest</button>
-          <button class="btn btn-ghost btn-xs" onclick="removeLastSet(1)">– Set</button>
-          <button class="btn btn-ghost btn-xs accent" onclick="document.getElementById(&#39;bulk-fill-1&#39;).style.display=(document.getElementById(&#39;bulk-fill-1&#39;).style.display===&#39;none&#39;?&#39;flex&#39;:&#39;none&#39;)">⚡ Bulk Fill</button>
-        </div>
-        
-        <!-- EXERCISE MANAGEMENT BAR -->
-        <div class="ex-actions-bar">
-          <button class="ex-action-btn" onclick="moveExercise(1,-1)" title="Move up">↑ Up</button>
-          <button class="ex-action-btn" onclick="moveExercise(1,1)" title="Move down">↓ Down</button>
-          <button class="ex-action-btn" onclick="duplicateExercise(1)">⧉ Duplicate</button>
-          <button class="ex-action-btn" onclick="openSwapExercise(1)">⇄ Swap</button>
-          <button class="ex-action-btn" onclick="openEditExerciseMeta(1)">✎ Edit</button>
-          <button class="ex-action-btn" onclick="clearAllSets(1)">🗑 Clear Sets</button>
-          <button class="ex-action-btn danger" onclick="deleteExercise(1)">✕ Delete</button>
-        </div>
-        
-        <textarea class="ex-notes" placeholder="Notes, form cues, feeling, RPE context..." rows="2" onchange="updateNotes(1,this.value)"></textarea>
-      </div>
-    </div>
-  
-    <div class="ex-card " id="ex-card-2" style="">
-      <div class="ex-header" onclick="toggleExCard(2)">
-        <div style="flex:1;min-width:0">
-          <div class="ex-name" style="">
-            Cable Chest Fly (Low to High)
-            
-          </div>
-          <div class="ex-meta">Chest (Lower) · 3 sets · 12–15 reps · 90s · <span style="color:var(--t3)">0/3 done</span></div>
-        </div>
-        <div class="ex-pills" style="flex-shrink:0">
-          <span class="pill pill-blue" style="font-size:7px">RIR 1–2</span>
-          
-          <span style="color:var(--t3);font-size:12px">▾</span>
-        </div>
-      </div>
-      <div class="ex-body" id="ex-body-2">
-        
-        
-        
-        <!-- BULK FILL BAR -->
-        <div class="bulk-fill-row" id="bulk-fill-2" style="display:none">
-          <span style="font-size:10px;color:var(--gold);font-weight:600;white-space:nowrap">⚡ Fill All:</span>
-          <input class="bulk-fill-inp" id="bulk-w-2" type="number" step="0.5" placeholder="kg">
-          <span style="font-size:11px;color:var(--t3)">×</span>
-          <input class="bulk-fill-inp" id="bulk-r-2" type="number" placeholder="reps">
-          <button class="btn btn-primary btn-xs" onclick="bulkFillSets(2)">Apply</button>
-          <button class="btn btn-ghost btn-xs" onclick="document.getElementById(&#39;bulk-fill-2&#39;).style.display=&#39;none&#39;">✕</button>
-        </div>
-
-        <table class="sets-table">
-          <thead><tr>
-            <th style="width:30px">SET</th>
-            <th>WEIGHT (kg)</th><th></th>
-            <th>REPS</th>
-            <th style="width:44px;font-size:7px">RPE</th>
-            <th>DONE</th>
-            <th style="width:22px"></th>
-          </tr></thead>
-          <tbody>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">1</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(2,0,&#39;w&#39;,this.value);updateORM(2)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(2,0,&#39;r&#39;,this.value);updateORM(2)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(2,0,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(2,0)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(2,0)">×</button></td>
-              </tr>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">2</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(2,1,&#39;w&#39;,this.value);updateORM(2)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(2,1,&#39;r&#39;,this.value);updateORM(2)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(2,1,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(2,1)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(2,1)">×</button></td>
-              </tr>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">3</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(2,2,&#39;w&#39;,this.value);updateORM(2)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(2,2,&#39;r&#39;,this.value);updateORM(2)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(2,2,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(2,2)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(2,2)">×</button></td>
-              </tr>
-            
-          </tbody>
-        </table>
-        
-        <div class="orm-inline" id="orm-display-2" style="display:none"></div>
-        
-        <!-- MAIN ACTION ROW -->
-        <div style="display:flex;gap:5px;margin-top:10px;flex-wrap:wrap">
-          <button class="btn btn-ghost btn-xs" onclick="addSet(2)">+ Set</button>
-          <button class="btn btn-ghost btn-xs" onclick="addWarmupSet(2)">+ Warmup</button>
-          <button class="btn btn-ghost btn-xs" onclick="setRest(90)">⏱ Rest</button>
-          <button class="btn btn-ghost btn-xs" onclick="removeLastSet(2)">– Set</button>
-          <button class="btn btn-ghost btn-xs accent" onclick="document.getElementById(&#39;bulk-fill-2&#39;).style.display=(document.getElementById(&#39;bulk-fill-2&#39;).style.display===&#39;none&#39;?&#39;flex&#39;:&#39;none&#39;)">⚡ Bulk Fill</button>
-        </div>
-        
-        <!-- EXERCISE MANAGEMENT BAR -->
-        <div class="ex-actions-bar">
-          <button class="ex-action-btn" onclick="moveExercise(2,-1)" title="Move up">↑ Up</button>
-          <button class="ex-action-btn" onclick="moveExercise(2,1)" title="Move down">↓ Down</button>
-          <button class="ex-action-btn" onclick="duplicateExercise(2)">⧉ Duplicate</button>
-          <button class="ex-action-btn" onclick="openSwapExercise(2)">⇄ Swap</button>
-          <button class="ex-action-btn" onclick="openEditExerciseMeta(2)">✎ Edit</button>
-          <button class="ex-action-btn" onclick="clearAllSets(2)">🗑 Clear Sets</button>
-          <button class="ex-action-btn danger" onclick="deleteExercise(2)">✕ Delete</button>
-        </div>
-        
-        <textarea class="ex-notes" placeholder="Notes, form cues, feeling, RPE context..." rows="2" onchange="updateNotes(2,this.value)"></textarea>
-      </div>
-    </div>
-  
-    <div class="ex-card " id="ex-card-3" style="">
-      <div class="ex-header" onclick="toggleExCard(3)">
-        <div style="flex:1;min-width:0">
-          <div class="ex-name" style="">
-            Seated DB Shoulder Press
-            
-          </div>
-          <div class="ex-meta">Shoulders (Front) · 3 sets · 8–10 reps · 2 min · <span style="color:var(--t3)">0/3 done</span></div>
-        </div>
-        <div class="ex-pills" style="flex-shrink:0">
-          <span class="pill pill-blue" style="font-size:7px">RIR 2</span>
-          
-          <span style="color:var(--t3);font-size:12px">▾</span>
-        </div>
-      </div>
-      <div class="ex-body" id="ex-body-3">
-        
-        
-        
-        <!-- BULK FILL BAR -->
-        <div class="bulk-fill-row" id="bulk-fill-3" style="display:none">
-          <span style="font-size:10px;color:var(--gold);font-weight:600;white-space:nowrap">⚡ Fill All:</span>
-          <input class="bulk-fill-inp" id="bulk-w-3" type="number" step="0.5" placeholder="kg">
-          <span style="font-size:11px;color:var(--t3)">×</span>
-          <input class="bulk-fill-inp" id="bulk-r-3" type="number" placeholder="reps">
-          <button class="btn btn-primary btn-xs" onclick="bulkFillSets(3)">Apply</button>
-          <button class="btn btn-ghost btn-xs" onclick="document.getElementById(&#39;bulk-fill-3&#39;).style.display=&#39;none&#39;">✕</button>
-        </div>
-
-        <table class="sets-table">
-          <thead><tr>
-            <th style="width:30px">SET</th>
-            <th>WEIGHT (kg)</th><th></th>
-            <th>REPS</th>
-            <th style="width:44px;font-size:7px">RPE</th>
-            <th>DONE</th>
-            <th style="width:22px"></th>
-          </tr></thead>
-          <tbody>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">1</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(3,0,&#39;w&#39;,this.value);updateORM(3)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(3,0,&#39;r&#39;,this.value);updateORM(3)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(3,0,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(3,0)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(3,0)">×</button></td>
-              </tr>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">2</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(3,1,&#39;w&#39;,this.value);updateORM(3)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(3,1,&#39;r&#39;,this.value);updateORM(3)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(3,1,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(3,1)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(3,1)">×</button></td>
-              </tr>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">3</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(3,2,&#39;w&#39;,this.value);updateORM(3)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(3,2,&#39;r&#39;,this.value);updateORM(3)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(3,2,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(3,2)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(3,2)">×</button></td>
-              </tr>
-            
-          </tbody>
-        </table>
-        
-        <div class="orm-inline" id="orm-display-3" style="display:none"></div>
-        
-        <!-- MAIN ACTION ROW -->
-        <div style="display:flex;gap:5px;margin-top:10px;flex-wrap:wrap">
-          <button class="btn btn-ghost btn-xs" onclick="addSet(3)">+ Set</button>
-          <button class="btn btn-ghost btn-xs" onclick="addWarmupSet(3)">+ Warmup</button>
-          <button class="btn btn-ghost btn-xs" onclick="setRest(120)">⏱ Rest</button>
-          <button class="btn btn-ghost btn-xs" onclick="removeLastSet(3)">– Set</button>
-          <button class="btn btn-ghost btn-xs accent" onclick="document.getElementById(&#39;bulk-fill-3&#39;).style.display=(document.getElementById(&#39;bulk-fill-3&#39;).style.display===&#39;none&#39;?&#39;flex&#39;:&#39;none&#39;)">⚡ Bulk Fill</button>
-        </div>
-        
-        <!-- EXERCISE MANAGEMENT BAR -->
-        <div class="ex-actions-bar">
-          <button class="ex-action-btn" onclick="moveExercise(3,-1)" title="Move up">↑ Up</button>
-          <button class="ex-action-btn" onclick="moveExercise(3,1)" title="Move down">↓ Down</button>
-          <button class="ex-action-btn" onclick="duplicateExercise(3)">⧉ Duplicate</button>
-          <button class="ex-action-btn" onclick="openSwapExercise(3)">⇄ Swap</button>
-          <button class="ex-action-btn" onclick="openEditExerciseMeta(3)">✎ Edit</button>
-          <button class="ex-action-btn" onclick="clearAllSets(3)">🗑 Clear Sets</button>
-          <button class="ex-action-btn danger" onclick="deleteExercise(3)">✕ Delete</button>
-        </div>
-        
-        <textarea class="ex-notes" placeholder="Notes, form cues, feeling, RPE context..." rows="2" onchange="updateNotes(3,this.value)"></textarea>
-      </div>
-    </div>
-  
-    <div class="ex-card " id="ex-card-4" style="">
-      <div class="ex-header" onclick="toggleExCard(4)">
-        <div style="flex:1;min-width:0">
-          <div class="ex-name" style="">
-            Cable Lateral Raise
-            
-          </div>
-          <div class="ex-meta">Shoulders (Side) · 3 sets · 12–15 reps · 60–75s · <span style="color:var(--t3)">0/3 done</span></div>
-        </div>
-        <div class="ex-pills" style="flex-shrink:0">
-          <span class="pill pill-blue" style="font-size:7px">RIR 1–2</span>
-          
-          <span style="color:var(--t3);font-size:12px">▾</span>
-        </div>
-      </div>
-      <div class="ex-body" id="ex-body-4">
-        
-        
-        
-        <!-- BULK FILL BAR -->
-        <div class="bulk-fill-row" id="bulk-fill-4" style="display:none">
-          <span style="font-size:10px;color:var(--gold);font-weight:600;white-space:nowrap">⚡ Fill All:</span>
-          <input class="bulk-fill-inp" id="bulk-w-4" type="number" step="0.5" placeholder="kg">
-          <span style="font-size:11px;color:var(--t3)">×</span>
-          <input class="bulk-fill-inp" id="bulk-r-4" type="number" placeholder="reps">
-          <button class="btn btn-primary btn-xs" onclick="bulkFillSets(4)">Apply</button>
-          <button class="btn btn-ghost btn-xs" onclick="document.getElementById(&#39;bulk-fill-4&#39;).style.display=&#39;none&#39;">✕</button>
-        </div>
-
-        <table class="sets-table">
-          <thead><tr>
-            <th style="width:30px">SET</th>
-            <th>WEIGHT (kg)</th><th></th>
-            <th>REPS</th>
-            <th style="width:44px;font-size:7px">RPE</th>
-            <th>DONE</th>
-            <th style="width:22px"></th>
-          </tr></thead>
-          <tbody>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">1</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(4,0,&#39;w&#39;,this.value);updateORM(4)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(4,0,&#39;r&#39;,this.value);updateORM(4)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(4,0,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(4,0)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(4,0)">×</button></td>
-              </tr>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">2</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(4,1,&#39;w&#39;,this.value);updateORM(4)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(4,1,&#39;r&#39;,this.value);updateORM(4)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(4,1,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(4,1)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(4,1)">×</button></td>
-              </tr>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">3</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(4,2,&#39;w&#39;,this.value);updateORM(4)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(4,2,&#39;r&#39;,this.value);updateORM(4)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(4,2,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(4,2)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(4,2)">×</button></td>
-              </tr>
-            
-          </tbody>
-        </table>
-        
-        <div class="orm-inline" id="orm-display-4" style="display:none"></div>
-        
-        <!-- MAIN ACTION ROW -->
-        <div style="display:flex;gap:5px;margin-top:10px;flex-wrap:wrap">
-          <button class="btn btn-ghost btn-xs" onclick="addSet(4)">+ Set</button>
-          <button class="btn btn-ghost btn-xs" onclick="addWarmupSet(4)">+ Warmup</button>
-          <button class="btn btn-ghost btn-xs" onclick="setRest(90)">⏱ Rest</button>
-          <button class="btn btn-ghost btn-xs" onclick="removeLastSet(4)">– Set</button>
-          <button class="btn btn-ghost btn-xs accent" onclick="document.getElementById(&#39;bulk-fill-4&#39;).style.display=(document.getElementById(&#39;bulk-fill-4&#39;).style.display===&#39;none&#39;?&#39;flex&#39;:&#39;none&#39;)">⚡ Bulk Fill</button>
-        </div>
-        
-        <!-- EXERCISE MANAGEMENT BAR -->
-        <div class="ex-actions-bar">
-          <button class="ex-action-btn" onclick="moveExercise(4,-1)" title="Move up">↑ Up</button>
-          <button class="ex-action-btn" onclick="moveExercise(4,1)" title="Move down">↓ Down</button>
-          <button class="ex-action-btn" onclick="duplicateExercise(4)">⧉ Duplicate</button>
-          <button class="ex-action-btn" onclick="openSwapExercise(4)">⇄ Swap</button>
-          <button class="ex-action-btn" onclick="openEditExerciseMeta(4)">✎ Edit</button>
-          <button class="ex-action-btn" onclick="clearAllSets(4)">🗑 Clear Sets</button>
-          <button class="ex-action-btn danger" onclick="deleteExercise(4)">✕ Delete</button>
-        </div>
-        
-        <textarea class="ex-notes" placeholder="Notes, form cues, feeling, RPE context..." rows="2" onchange="updateNotes(4,this.value)"></textarea>
-      </div>
-    </div>
-  
-    <div class="ex-card " id="ex-card-5" style="">
-      <div class="ex-header" onclick="toggleExCard(5)">
-        <div style="flex:1;min-width:0">
-          <div class="ex-name" style="">
-            Rope Tricep Pushdown
-            
-          </div>
-          <div class="ex-meta">Triceps · 3 sets · 10–12 reps · 60–75s · <span style="color:var(--t3)">0/3 done</span></div>
-        </div>
-        <div class="ex-pills" style="flex-shrink:0">
-          <span class="pill pill-blue" style="font-size:7px">RIR 1–2</span>
-          
-          <span style="color:var(--t3);font-size:12px">▾</span>
-        </div>
-      </div>
-      <div class="ex-body" id="ex-body-5">
-        
-        
-        
-        <!-- BULK FILL BAR -->
-        <div class="bulk-fill-row" id="bulk-fill-5" style="display:none">
-          <span style="font-size:10px;color:var(--gold);font-weight:600;white-space:nowrap">⚡ Fill All:</span>
-          <input class="bulk-fill-inp" id="bulk-w-5" type="number" step="0.5" placeholder="kg">
-          <span style="font-size:11px;color:var(--t3)">×</span>
-          <input class="bulk-fill-inp" id="bulk-r-5" type="number" placeholder="reps">
-          <button class="btn btn-primary btn-xs" onclick="bulkFillSets(5)">Apply</button>
-          <button class="btn btn-ghost btn-xs" onclick="document.getElementById(&#39;bulk-fill-5&#39;).style.display=&#39;none&#39;">✕</button>
-        </div>
-
-        <table class="sets-table">
-          <thead><tr>
-            <th style="width:30px">SET</th>
-            <th>WEIGHT (kg)</th><th></th>
-            <th>REPS</th>
-            <th style="width:44px;font-size:7px">RPE</th>
-            <th>DONE</th>
-            <th style="width:22px"></th>
-          </tr></thead>
-          <tbody>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">1</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(5,0,&#39;w&#39;,this.value);updateORM(5)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(5,0,&#39;r&#39;,this.value);updateORM(5)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(5,0,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(5,0)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(5,0)">×</button></td>
-              </tr>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">2</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(5,1,&#39;w&#39;,this.value);updateORM(5)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(5,1,&#39;r&#39;,this.value);updateORM(5)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(5,1,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(5,1)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(5,1)">×</button></td>
-              </tr>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">3</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(5,2,&#39;w&#39;,this.value);updateORM(5)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(5,2,&#39;r&#39;,this.value);updateORM(5)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(5,2,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(5,2)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(5,2)">×</button></td>
-              </tr>
-            
-          </tbody>
-        </table>
-        
-        <div class="orm-inline" id="orm-display-5" style="display:none"></div>
-        
-        <!-- MAIN ACTION ROW -->
-        <div style="display:flex;gap:5px;margin-top:10px;flex-wrap:wrap">
-          <button class="btn btn-ghost btn-xs" onclick="addSet(5)">+ Set</button>
-          <button class="btn btn-ghost btn-xs" onclick="addWarmupSet(5)">+ Warmup</button>
-          <button class="btn btn-ghost btn-xs" onclick="setRest(90)">⏱ Rest</button>
-          <button class="btn btn-ghost btn-xs" onclick="removeLastSet(5)">– Set</button>
-          <button class="btn btn-ghost btn-xs accent" onclick="document.getElementById(&#39;bulk-fill-5&#39;).style.display=(document.getElementById(&#39;bulk-fill-5&#39;).style.display===&#39;none&#39;?&#39;flex&#39;:&#39;none&#39;)">⚡ Bulk Fill</button>
-        </div>
-        
-        <!-- EXERCISE MANAGEMENT BAR -->
-        <div class="ex-actions-bar">
-          <button class="ex-action-btn" onclick="moveExercise(5,-1)" title="Move up">↑ Up</button>
-          <button class="ex-action-btn" onclick="moveExercise(5,1)" title="Move down">↓ Down</button>
-          <button class="ex-action-btn" onclick="duplicateExercise(5)">⧉ Duplicate</button>
-          <button class="ex-action-btn" onclick="openSwapExercise(5)">⇄ Swap</button>
-          <button class="ex-action-btn" onclick="openEditExerciseMeta(5)">✎ Edit</button>
-          <button class="ex-action-btn" onclick="clearAllSets(5)">🗑 Clear Sets</button>
-          <button class="ex-action-btn danger" onclick="deleteExercise(5)">✕ Delete</button>
-        </div>
-        
-        <textarea class="ex-notes" placeholder="Notes, form cues, feeling, RPE context..." rows="2" onchange="updateNotes(5,this.value)"></textarea>
-      </div>
-    </div>
-  
-    <div class="ex-card " id="ex-card-6" style="">
-      <div class="ex-header" onclick="toggleExCard(6)">
-        <div style="flex:1;min-width:0">
-          <div class="ex-name" style="">
-            Overhead DB Tricep Extension
-            
-          </div>
-          <div class="ex-meta">Triceps (Long Head) · 2 sets · 12 reps · 60s · <span style="color:var(--t3)">0/2 done</span></div>
-        </div>
-        <div class="ex-pills" style="flex-shrink:0">
-          <span class="pill pill-blue" style="font-size:7px">RIR 1</span>
-          
-          <span style="color:var(--t3);font-size:12px">▾</span>
-        </div>
-      </div>
-      <div class="ex-body" id="ex-body-6">
-        
-        
-        
-        <!-- BULK FILL BAR -->
-        <div class="bulk-fill-row" id="bulk-fill-6" style="display:none">
-          <span style="font-size:10px;color:var(--gold);font-weight:600;white-space:nowrap">⚡ Fill All:</span>
-          <input class="bulk-fill-inp" id="bulk-w-6" type="number" step="0.5" placeholder="kg">
-          <span style="font-size:11px;color:var(--t3)">×</span>
-          <input class="bulk-fill-inp" id="bulk-r-6" type="number" placeholder="reps">
-          <button class="btn btn-primary btn-xs" onclick="bulkFillSets(6)">Apply</button>
-          <button class="btn btn-ghost btn-xs" onclick="document.getElementById(&#39;bulk-fill-6&#39;).style.display=&#39;none&#39;">✕</button>
-        </div>
-
-        <table class="sets-table">
-          <thead><tr>
-            <th style="width:30px">SET</th>
-            <th>WEIGHT (kg)</th><th></th>
-            <th>REPS</th>
-            <th style="width:44px;font-size:7px">RPE</th>
-            <th>DONE</th>
-            <th style="width:22px"></th>
-          </tr></thead>
-          <tbody>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">1</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(6,0,&#39;w&#39;,this.value);updateORM(6)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(6,0,&#39;r&#39;,this.value);updateORM(6)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(6,0,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(6,0)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(6,0)">×</button></td>
-              </tr>
-            
-              <tr class="">
-                <td>
-                  <span class="set-num">2</span>
-                </td>
-                <td><input class="set-input" type="number" step="0.5" value="" placeholder="kg" onchange="updateSet(6,1,&#39;w&#39;,this.value);updateORM(6)"></td>
-                <td><span class="set-x">×</span></td>
-                <td><input class="set-input" type="number" value="" placeholder="reps" onchange="updateSet(6,1,&#39;r&#39;,this.value);updateORM(6)"></td>
-                <td><input class="set-rpe-input" type="number" min="1" max="10" step="0.5" value="" placeholder="—" onchange="updateSet(6,1,&#39;rpe&#39;,this.value)" title="RPE (Rate of Perceived Exertion 1-10)"></td>
-                <td><button class="set-check  " onclick="toggleSet(6,1)">✓</button></td>
-                <td><button style="font-size:11px;color:var(--t4);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all var(--tr)" onmouseover="this.style.color=&#39;var(--red)&#39;" onmouseout="this.style.color=&#39;var(--t4)&#39;" onclick="deleteSet(6,1)">×</button></td>
-              </tr>
-            
-          </tbody>
-        </table>
-        
-        <div class="orm-inline" id="orm-display-6" style="display:none"></div>
-        
-        <!-- MAIN ACTION ROW -->
-        <div style="display:flex;gap:5px;margin-top:10px;flex-wrap:wrap">
-          <button class="btn btn-ghost btn-xs" onclick="addSet(6)">+ Set</button>
-          <button class="btn btn-ghost btn-xs" onclick="addWarmupSet(6)">+ Warmup</button>
-          <button class="btn btn-ghost btn-xs" onclick="setRest(90)">⏱ Rest</button>
-          <button class="btn btn-ghost btn-xs" onclick="removeLastSet(6)">– Set</button>
-          <button class="btn btn-ghost btn-xs accent" onclick="document.getElementById(&#39;bulk-fill-6&#39;).style.display=(document.getElementById(&#39;bulk-fill-6&#39;).style.display===&#39;none&#39;?&#39;flex&#39;:&#39;none&#39;)">⚡ Bulk Fill</button>
-        </div>
-        
-        <!-- EXERCISE MANAGEMENT BAR -->
-        <div class="ex-actions-bar">
-          <button class="ex-action-btn" onclick="moveExercise(6,-1)" title="Move up">↑ Up</button>
-          
-          <button class="ex-action-btn" onclick="duplicateExercise(6)">⧉ Duplicate</button>
-          <button class="ex-action-btn" onclick="openSwapExercise(6)">⇄ Swap</button>
-          <button class="ex-action-btn" onclick="openEditExerciseMeta(6)">✎ Edit</button>
-          <button class="ex-action-btn" onclick="clearAllSets(6)">🗑 Clear Sets</button>
-          <button class="ex-action-btn danger" onclick="deleteExercise(6)">✕ Delete</button>
-        </div>
-        
-        <textarea class="ex-notes" placeholder="Notes, form cues, feeling, RPE context..." rows="2" onchange="updateNotes(6,this.value)"></textarea>
-      </div>
-    </div>
-  
-      </div>
-
-      <!-- SESSION NOTE -->
-      <div class="wk-note-bar">
-        <span style="font-size:14px;flex-shrink:0">📝</span>
-        <textarea class="wk-note-textarea" rows="1" placeholder="Session notes — how you felt, what to improve, next session targets..." onchange="S.session.note=this.value;save()"></textarea>
-      </div>
-
-      <div class="add-ex-bar">
-        <input class="add-ex-input" id="add-ex-inp" placeholder="Add exercise name..." onkeydown="if(event.key===&#39;Enter&#39;)addCustomExercise()">
-        <select id="add-ex-muscle" style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:0 8px;font-size:11px;color:var(--t2);min-width:110px">
-          <option value="Custom">Muscle group</option>
-          <option>Chest</option><option>Back</option><option>Shoulders</option>
-          <option>Biceps</option><option>Triceps</option><option>Quads</option>
-          <option>Hamstrings</option><option>Glutes</option><option>Calves</option>
-          <option>Core</option><option>Full Body</option><option>Cardio</option>
-        </select>
-        <button class="btn btn-ghost btn-sm" onclick="addCustomExercise()">+ Add</button>
-      </div>
-    
-  </div>
+  <div id="view-workout" class="view"></div>
   <div id="view-logs" class="view"></div>
   <div id="view-progress" class="view"></div>
   <div id="view-habits" class="view"></div>
@@ -4647,13 +2912,19 @@ function toggleTheme() {
 ═══════════════════════════════════════════════════════════════ */
 function navigate(view) {
   currentView = view;
+  // Update nav active state in sidebar and bottom nav
   document.querySelectorAll('[data-view]').forEach(el => {
-    el.classList.toggle('active', el.dataset.view===view);
+    el.classList.toggle('active', el.dataset.view === view);
   });
+  // Show/hide views
   document.querySelectorAll('.view').forEach(el => {
-    el.classList.toggle('active', el.id===`view-${view}`);
+    el.classList.toggle('active', el.id === `view-${view}`);
   });
-  renderView(view);
+  // Scroll main content to top smoothly
+  const main = document.querySelector('.main');
+  if (main) main.scrollTo({ top: 0, behavior: 'smooth' });
+  // Render the view content
+  try { renderView(view); } catch(e) { console.error('[FitOS] renderView error:', e); }
   updateSidebarStreak();
   updateNotifBadge();
   updateTodoBadge();
@@ -5075,6 +3346,7 @@ function renderDashWeeklyChart() {
   const isDark=S.theme==='dark';
   const gridCol=isDark?'#1E1E28':'#E8E5DD';
   const tickCol=isDark?'#5C5C7A':'#9090A0';
+  if(typeof Chart==='undefined'){console.warn('Chart.js not loaded');return;}
   activeCharts.dashWeekly=new Chart(canvas,{
     type:'bar',
     data:{labels:days,datasets:[{
@@ -6016,6 +4288,7 @@ function renderStrengthChart(exName) {
   const isDark=S.theme==='dark';
   const gridCol=isDark?'#1E1E28':'#E8E5DD';
   const tickCol=isDark?'#5C5C7A':'#9090A0';
+  if(typeof Chart==='undefined'){console.warn('Chart.js not loaded');return;}
   activeCharts.strength=new Chart(canvas,{
     type:'line',
     data:{
@@ -6051,6 +4324,7 @@ function renderBWChart() {
   const isDark=S.theme==='dark';
   const gridCol=isDark?'#1E1E28':'#E8E5DD';
   const tickCol=isDark?'#5C5C7A':'#9090A0';
+  if(typeof Chart==='undefined'){console.warn('Chart.js not loaded');return;}
   activeCharts.bw=new Chart(canvas,{
     type:'line',
     data:{
@@ -7218,6 +5492,7 @@ function renderHabitsWeeklyChart(labels,data) {
   const canvas=document.getElementById('habits-weekly-chart');if(!canvas)return;
   const isDark=S.theme==='dark';
   const tickCol=isDark?'#5C5C7A':'#9090A0';
+  if(typeof Chart==='undefined'){console.warn('Chart.js not loaded');return;}
   activeCharts.habitsWeekly=new Chart(canvas,{
     type:'bar',
     data:{labels,datasets:[{
@@ -9980,80 +8255,6 @@ async function init() {
 }
 
 document.addEventListener('DOMContentLoaded',init);
-
-/* ═══════════════════════════════════════════════════════════════
-   MOBILE MENU DRAWER
-═══════════════════════════════════════════════════════════════ */
-const BOTTOM_NAV_VIEWS = ['dashboard','workout','diet','habits','progress'];
-
-function toggleMobileMenu() {
-  const drawer  = document.getElementById('mobile-drawer');
-  const overlay = document.getElementById('mobile-drawer-overlay');
-  const btn     = document.getElementById('mobile-menu-btn');
-  const isOpen  = drawer.style.display === 'block';
-  if (isOpen) {
-    closeMobileMenu();
-  } else {
-    drawer.style.display  = 'block';
-    overlay.style.display = 'block';
-    btn.classList.add('menu-open');
-    document.body.style.overflow = 'hidden';
-    // Sync streak display
-    const sn = document.getElementById('sb-streak-num');
-    const sb = document.getElementById('sb-streak-best');
-    if (sn) document.getElementById('mob-streak-num').textContent  = sn.textContent;
-    if (sb) document.getElementById('mob-streak-best').textContent = sb.textContent;
-    // Sync theme icon
-    const ti = document.getElementById('mob-theme-icon');
-    const tl = document.getElementById('mob-theme-lbl');
-    if (ti) ti.textContent = document.documentElement.getAttribute('data-theme')==='dark' ? '☀️' : '🌙';
-    if (tl) tl.textContent = document.documentElement.getAttribute('data-theme')==='dark' ? 'Light' : 'Dark';
-    // Mark active tile
-    const cur = typeof currentView !== 'undefined' ? currentView : 'dashboard';
-    document.querySelectorAll('.mob-nav-tile[data-view]').forEach(t => {
-      t.classList.toggle('active', t.dataset.view === cur);
-    });
-  }
-}
-
-function closeMobileMenu() {
-  const drawer  = document.getElementById('mobile-drawer');
-  const overlay = document.getElementById('mobile-drawer-overlay');
-  const btn     = document.getElementById('mobile-menu-btn');
-  if (!drawer) return;
-  drawer.style.display  = 'none';
-  overlay.style.display = 'none';
-  btn && btn.classList.remove('menu-open');
-  document.body.style.overflow = '';
-}
-
-// Highlight "More" button when on a non-bottom-nav view
-const _origNavigate = navigate;
-function navigate(view) {
-  _origNavigate(view);
-  const moreBtn = document.getElementById('mobile-menu-btn');
-  if (moreBtn) {
-    const isExtra = !BOTTOM_NAV_VIEWS.includes(view);
-    moreBtn.classList.toggle('active', isExtra);
-    // Deactivate bottom nav items that aren't the current view
-    if (isExtra) {
-      document.querySelectorAll('.bnav-item:not(#mobile-menu-btn)').forEach(b => {
-        b.classList.remove('active');
-      });
-      moreBtn.classList.add('active');
-    }
-  }
-}
-
-// Swipe-down to close drawer
-let _touchStartY = 0;
-document.addEventListener('touchstart', e => { _touchStartY = e.touches[0].clientY; }, {passive:true});
-document.addEventListener('touchend', e => {
-  const drawer = document.getElementById('mobile-drawer');
-  if (!drawer || drawer.style.display !== 'block') return;
-  const dy = e.changedTouches[0].clientY - _touchStartY;
-  if (dy > 80) closeMobileMenu();
-}, {passive:true});
 </script>
 
 
